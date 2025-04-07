@@ -8,60 +8,31 @@
 
 ```
 ai_tech_media/
-├── articles/                       # 記事保存ディレクトリ
-│   ├── drafts/                     # 記事ドラフト
-│   ├── published/                  # 公開済み記事
-│   └── templates/                  # 記事テンプレート
-├── research/                       # 調査資料
-│   ├── search_results/            # 検索結果保存
-│   └── reference_materials/       # 参考資料
-├── assets/                         # 記事用素材
-│   ├── images/                     # 画像素材
-│   └── infographics/              # インフォグラフィック
-├── seo/                           # SEO関連資料
-│   ├── keywords/                  # キーワードリスト
-│   └── analytics/                 # アクセス分析データ
-├── social/                        # SNS投稿用素材
-│   ├── twitter/                   # Twitter/X用投稿文
-│   ├── slack/                     # Slack用投稿文
-│   └── newsletter/                # メールマガジン用文章
 ├── logs/                          # 制作プロセスの記録
 │   ├── meeting_minutes/           # 会議議事録
 │   ├── article_drafts/            # 記事ドラフトのバージョン履歴
 │   ├── structure_plans/           # 記事構成案の履歴
 │   ├── reviews/                   # レビュー記録
 │   ├── progress/                  # 進捗報告書
-│   └── process_artifacts/         # プロセス成果物の保管
-├── prompts/                       # AIエージェント用プロンプト
-│   ├── planning_agents.md         # 企画・編集会議プロセス用エージェント
-│   ├── research_agents.md         # 情報収集プロセス用エージェント
-│   ├── structure_agents.md        # 記事構成作成プロセス用エージェント
-│   ├── draft_agents.md            # 記事ドラフト作成プロセス用エージェント
-│   ├── edit_publish_agents.md     # 編集・公開準備プロセス用エージェント
-│   ├── framework_agents.md        # エージェント連携フレームワーク
-│   ├── zenn_agents.md             # Zenn特化プロセス用エージェント
-│   └── agent_templates/           # エージェントテンプレート
-└── zenn/                          # Zenn特化リソース
-    ├── trend_analysis/            # トレンド分析資料
-    │   ├── weekly_reports/        # 週次トレンドレポート
-    │   ├── tag_popularity/        # タグ人気度分析
-    │   └── category_performance/  # カテゴリ別パフォーマンス分析
-    ├── content_templates/         # Zenn最適化テンプレート
-    │   ├── trending_templates/    # トレンド記事テンプレート
-    │   ├── code_patterns/         # 人気コードパターン
-    │   └── section_layouts/       # 最適セクション構造テンプレート
-    ├── community/                 # コミュニティ管理
-    │   ├── engagement_plans/      # エンゲージメント戦略
-    │   └── influencer_map/        # 影響力者マッピング
-    ├── optimization/              # Zenn最適化リソース
-    │   ├── markdown_guides/       # マークダウン活用ガイド
-    │   └── feature_utilization/   # Zenn機能活用事例
-    └── analytics/                 # パフォーマンス分析
-        ├── article_metrics/       # 記事指標分析
-        ├── audience_insights/     # 読者インサイト
-        ├── content_element_effects/ # コンテンツ要素効果測定
-        ├── engagement_patterns/   # エンゲージメントパターン
-        └── a_b_test_results/      # A/Bテスト結果
+│   ├── process_artifacts/         # プロセス成果物の保管
+│   └── analytics/                 # パフォーマンス分析
+│       ├── article_metrics/       # 記事指標分析
+│       ├── audience_insights/     # 読者インサイト
+│       ├── content_element_effects/ # コンテンツ要素効果測定
+│       ├── engagement_patterns/   # エンゲージメントパターン
+│       └── a_b_test_results/      # A/Bテスト結果
+├── templates/                     # テンプレート集約ディレクトリ
+│   ├── article/                   # 記事テンプレート
+│   ├── agent/                     # エージェントテンプレート
+│   └── zenn/                      # Zenn特化テンプレート
+└── prompts/                      # AIエージェント用プロンプト
+    ├── planning_agents.md         # 企画・編集会議プロセス用エージェント
+    ├── research_agents.md         # 情報収集プロセス用エージェント
+    ├── structure_agents.md        # 記事構成作成プロセス用エージェント
+    ├── draft_agents.md            # 記事ドラフト作成プロセス用エージェント
+    ├── edit_publish_agents.md     # 編集・公開準備プロセス用エージェント
+    ├── framework_agents.md        # エージェント連携フレームワーク
+    └── zenn_agents.md             # Zenn特化プロセス用エージェント
 ```
 
 ## 制作プロセス
@@ -230,11 +201,6 @@ mcp_brave_brave_web_search (query: "生成AI トレンド キーワード [年] 
 - **処理方法**: Zenn特化マークダウン記法の適用
 - **出力**: Zenn最適化ドラフト（`articles/drafts/YYYY-MM-DD_[記事ID]_zenn_optimized.md`）
 
-#### h. Zennコミュニティエンゲージメント設定
-- **実行プロンプト**: `prompts/zenn_agents.md#コミュニティエンゲージメントエージェント`
-- **入力データ**: 最終記事、影響力者マッピング
-- **出力**: エンゲージメント戦略（`zenn/community/engagement_plans/YYYY-MM-DD_[記事ID]_strategy.md`）
-
 ### 5. 編集・最適化 (所要時間: 20-30分)
 
 #### a. 校閲
@@ -316,11 +282,6 @@ mcp_brave_brave_web_search (query: "生成AI トレンド キーワード [年] 
 - **処理方法**: 公開前最終チェック
 - **出力**: 公開確認リスト（`logs/progress/YYYY-MM-DD_[記事ID]_publish_checklist.md`）
 - **人間承認**: 公開承認と実行
-
-#### g. Zennコミュニティエンゲージメント設定
-- **実行プロンプト**: `prompts/zenn_agents.md#コミュニティエンゲージメントエージェント`
-- **入力データ**: 最終記事、影響力者マッピング
-- **出力**: エンゲージメント戦略（`zenn/community/engagement_plans/YYYY-MM-DD_[記事ID]_strategy.md`）
 
 ## logsディレクトリの重要性
 
