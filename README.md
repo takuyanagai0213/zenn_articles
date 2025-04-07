@@ -286,6 +286,52 @@ mcp_brave_brave_web_search (query: "生成AI トレンド キーワード [年] 
 - **出力**: 公開確認リスト（`logs/progress/YYYY-MM-DD_[記事ID]_publish_checklist.md`）
 - **人間承認**: 公開承認と実行
 
+### 7. Zenn投稿プロセス (所要時間: 10-15分)
+
+#### a. Zenn用コンテンツ最終確認
+- **実行プロンプト**: `prompts/zenn_agents.md#Zenn最終確認エージェント`
+- **入力データ**: Zenn最適化ドラフト、Zenn特化データレポート
+- **処理方法**: Zennプラットフォーム固有の品質基準確認
+- **出力**: Zenn投稿前チェックリスト（`logs/reviews/YYYY-MM-DD_[記事ID]_zenn_final_check.md`）
+
+#### b. フロントマター生成
+- **実行プロンプト**: `prompts/zenn_agents.md#フロントマター生成エージェント`
+- **入力データ**: Zenn最適化ドラフト、SEOキーワードレポート
+- **処理方法**: Zenn記事メタデータの最適化設定
+- **出力**: フロントマター設定ファイル（`zenn/metadata/YYYY-MM-DD_[記事ID]_frontmatter.md`）
+
+#### c. タグ最適化
+- **実行プロンプト**: `prompts/zenn_agents.md#タグ最適化エージェント`
+- **入力データ**: Zenn特化データレポート、記事内容
+- **処理方法**: エンゲージメント最大化タグ選定アルゴリズム
+- **出力**: 最適化タグセット（`zenn/metadata/YYYY-MM-DD_[記事ID]_tags.md`）
+
+#### d. スクリプト実行による投稿
+- **実行コマンド**:
+```
+python scripts/zenn_publisher.py --article articles/drafts/YYYY-MM-DD_[記事ID]_zenn_optimized.md --images assets/images/YYYY-MM-DD_[記事ID]_final/ --state [published/draft] [--push]
+```
+- **処理内容**:
+  - 記事ファイルのZenn形式への変換
+  - 画像ファイルの適切なディレクトリへのコピー
+  - フロントマターの自動適用
+  - スラッグ生成と公開設定
+  - GitHub連携による公開（--push指定時）
+- **出力**: Zenn公開準備完了レポート（コンソール出力）
+
+#### e. 公開確認と結果記録
+- **実行プロンプト**: `prompts/zenn_agents.md#公開確認エージェント`
+- **入力データ**: Zenn公開準備完了レポート
+- **処理方法**: URL確認と公開状態検証
+- **出力**: Zenn公開結果レポート（`logs/progress/YYYY-MM-DD_[記事ID]_zenn_publish_report.md`）
+
+#### f. エンゲージメント初期測定
+- **実行プロンプト**: `prompts/zenn_agents.md#エンゲージメント分析エージェント`
+- **実行タイミング**: 公開後24時間以内
+- **入力データ**: Zenn記事アクセス初期データ
+- **処理方法**: 早期エンゲージメント指標分析
+- **出力**: 初期反応レポート（`logs/analytics/YYYY-MM-DD_[記事ID]_zenn_initial_engagement.md`）
+
 ## logsディレクトリの重要性
 
 各制作プロセスで生成される記録は、logsディレクトリに保存し、必ず保持する必要があります。これらのファイルは以下の目的で重要です：
