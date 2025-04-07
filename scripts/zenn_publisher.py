@@ -18,7 +18,7 @@ Zenn記事公開自動化スクリプト
     --push     GitHubにプッシュするかどうか（オプション、デフォルト: False）
 
 環境変数:
-    ZENN_USERNAME  Zennのユーザー名（デフォルト: takuyanagai0213）
+    ZENN_USERNAME  Zennのユーザー名
 """
 
 import os
