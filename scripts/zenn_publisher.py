@@ -1,179 +1,271 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Zenn記事公開自動化スクリプト
+
+記事ファイルをZenn向けに変換し、GitHubリポジトリに公開するための
+自動化スクリプトです。
+
+使用方法:
+    python zenn_publisher.py --article path/to/article.md --images path/to/images/ [options]
+
+オプション:
+    --article  記事ファイルのパス（必須）
+    --images   画像ディレクトリのパス（オプション）
+    --emoji    記事に使用する絵文字（オプション、自動選定も可能）
+    --state    公開状態 published/draft（オプション、デフォルト: draft）
+    --push     GitHubにプッシュするかどうか（オプション、デフォルト: False）
+
+環境変数:
+    ZENN_USERNAME  Zennのユーザー名（デフォルト: takuyanagai0213）
+"""
+
 import os
+import sys
 import re
-import frontmatter
-from github import Github
-from datetime import datetime
+import shutil
+import argparse
+import subprocess
+import datetime
+import random
+import json
+import yaml
 from pathlib import Path
-from dotenv import load_dotenv
 
-class ZennPublisher:
-    def __init__(self):
-        load_dotenv()
-        self.github_token = os.getenv('GITHUB_TOKEN')
-        self.github_repo = os.getenv('ZENN_GITHUB_REPO')  # format: "username/repo"
-        self.gh = Github(self.github_token)
+# 絵文字カテゴリマッピング
+EMOJI_CATEGORIES = {
+    "AI": ["🤖", "🧠", "🔮", "🎯", "⚙️"],
+    "データ分析": ["📊", "📈", "📉", "🧮", "🔍"],
+    "Web開発": ["🌐", "💻", "🖥️", "🔌", "🧩"],
+    "モバイル": ["📱", "📲", "⌚", "📡", "🔋"],
+    "インフラ": ["🛠️", "🔧", "🚀", "☁️", "🏗️"],
+    "セキュリティ": ["🔒", "🛡️", "🔐", "🔑", "⚔️"],
+    "プログラミング": ["👨‍💻", "👩‍💻", "🧑‍💻", "📝", "💡"]
+}
 
-    def generate_valid_slug(self, title):
-        """
-        タイトルから有効なslugを生成します
+# デフォルト設定
+DEFAULT_EMOJI = "💭"
+DEFAULT_TYPE = "tech"
+DEFAULT_STATE = "draft"
+ZENN_ARTICLE_DIR = "articles"
+ZENN_USERNAME = os.environ.get("ZENN_USERNAME", "takuyanagai0213")
 
-        - 半角英数字（a-z0-9）、ハイフン（-）、アンダースコア（_）のみ使用可能
-        - 12〜50字の制限
-        - グローバルでユニークになるようにタイムスタンプを付与
-        """
-        # タイトルを小文字に変換し、英数字以外をハイフンに置換
-        slug = title.lower()
-        slug = re.sub(r'[^a-z0-9]+', '-', slug)
+def parse_args():
+    """コマンドライン引数をパースする"""
+    parser = argparse.ArgumentParser(description="Zenn記事公開自動化ツール")
+    parser.add_argument("--article", required=True, help="記事ファイルのパス")
+    parser.add_argument("--images", help="画像ディレクトリのパス")
+    parser.add_argument("--emoji", help="記事に使用する絵文字")
+    parser.add_argument("--state", default=DEFAULT_STATE, choices=["published", "draft"],
+                        help="公開状態（published/draft）")
+    parser.add_argument("--push", action="store_true", help="GitHubにプッシュするかどうか")
 
-        # 先頭と末尾のハイフンを削除
-        slug = slug.strip('-')
+    return parser.parse_args()
 
-        # タイムスタンプを生成（YYYYMMDDHHmmss形式）
-        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+def extract_metadata(content):
+    """記事内容からメタデータを抽出する"""
+    metadata = {
+        "title": "",
+        "type": DEFAULT_TYPE,
+        "topics": [],
+        "category": ""
+    }
 
-        # タイトルが長すぎる場合は切り詰める（タイムスタンプ用に余裕を持たせる）
-        max_title_length = 35  # 50 - 15（タイムスタンプ用）
-        if len(slug) > max_title_length:
-            slug = slug[:max_title_length].rstrip('-')
+    # タイトル抽出
+    title_match = re.search(r'^# (.+)$', content, re.MULTILINE)
+    if title_match:
+        metadata["title"] = title_match.group(1).strip()
 
-        # slugが短すぎる場合は、タイトルを繰り返して長さを調整
-        min_title_length = 12 - len(timestamp) - 1  # 12 - タイムスタンプ長 - ハイフン
-        while len(slug) < min_title_length:
-            slug = f"{slug}-{slug}"
+    # トピック（タグ）抽出 - タグ表記を検索
+    tag_matches = re.findall(r'#([a-zA-Z0-9_-]+)', content)
+    if tag_matches:
+        # 重複を除去して先頭5つのみ取得
+        metadata["topics"] = list(dict.fromkeys(tag_matches))[:5]
 
-        # タイムスタンプを付与して最終的なslugを生成
-        final_slug = f"{slug}-{timestamp}"
+    # カテゴリ推定 - 頻出単語からカテゴリを推定
+    for category, _ in EMOJI_CATEGORIES.items():
+        if category.lower() in content.lower():
+            metadata["category"] = category
+            break
 
-        return final_slug
+    return metadata
 
-    def validate_article_type(self, type):
-        """記事タイプを検証します"""
-        valid_types = ["tech", "idea"]
-        if type not in valid_types:
-            raise ValueError(f"記事タイプは{valid_types}のいずれかである必要があります")
-        return type
+def select_emoji(category, content=""):
+    """カテゴリに基づいて絵文字を選択する"""
+    if not category and not content:
+        return DEFAULT_EMOJI
 
-    def validate_topics(self, topics):
-        """トピックスを検証します"""
-        if not topics or not isinstance(topics, list):
-            return ["Tech"]
-        return topics[:5]  # Zennは最大5つまで
+    # カテゴリが指定されている場合
+    if category in EMOJI_CATEGORIES:
+        return random.choice(EMOJI_CATEGORIES[category])
 
-    def publish_article(self, title, content, topics=None, type="tech", published=False, emoji="✨", published_at=None):
-        """
-        Zennの記事を作成してGitHubリポジトリにプッシュします
+    # 内容から推測
+    for category, emojis in EMOJI_CATEGORIES.items():
+        if category.lower() in content.lower():
+            return random.choice(emojis)
 
-        Args:
-            title (str): 記事のタイトル
-            content (str): 記事の本文（Markdown形式）
-            topics (list): 記事のトピックス（最大5つ）
-            type (str): 記事タイプ（"tech" or "idea"）
-            published (bool): 公開するかどうか
-            emoji (str): アイキャッチ用の絵文字（1文字）
-            published_at (str): 公開日時（YYYY-MM-DD or YYYY-MM-DD HH:mm形式、オプション）
-        """
-        # 各パラメータを検証
-        type = self.validate_article_type(type)
-        topics = self.validate_topics(topics)
+    return DEFAULT_EMOJI
 
-        # Zennの記事メタデータを作成
-        metadata = {
-            "title": title,
-            "emoji": emoji,
-            "type": type,
-            "topics": topics,
-            "published": published,
-        }
+def convert_image_paths(content, article_slug, image_dir=None):
+    """画像パスをZennに適したパスに変換する"""
+    if not image_dir:
+        return content
 
-        # 公開予約時のみpublished_atを設定
-        if published and published_at:
-            metadata["published_at"] = published_at
+    # 絶対パスを相対パスに変換
+    image_dir_path = Path(image_dir).resolve()
 
-        # frontmatterとコンテンツを結合
-        article = frontmatter.Post(content, **metadata)
+    # 画像ファイルのパターンを検出して変換
+    def replace_image_path(match):
+        img_path = match.group(1)
+        img_file = os.path.basename(img_path)
+        return f"![](/images/{article_slug}/{img_file})"
 
-        # 有効なslugを生成
-        slug = self.generate_valid_slug(title)
-        filename = f"articles/{slug}.md"
+    # Markdown画像表記を変換
+    content = re.sub(r'!\[.*?\]\((.*?)\)', replace_image_path, content)
 
-        try:
-            # GitHubリポジトリに接続
-            repo = self.gh.get_repo(self.github_repo)
+    return content
 
-            # 記事をプッシュ
-            repo.create_file(
-                path=filename,
-                message=f"Add new article: {title}",
-                content=frontmatter.dumps(article),
-                branch="main"
-            )
-            return f"記事が正常に作成されました: {filename}"
-        except Exception as e:
-            return f"エラーが発生しました: {str(e)}"
+def create_article_slug(title):
+    """記事タイトルからスラッグを生成する"""
+    # 英数字以外を削除し、空白をハイフンに変換
+    slug = re.sub(r'[^\w\s-]', '', title.lower())
+    slug = re.sub(r'[\s]+', '-', slug)
 
-    def update_article(self, slug, title=None, content=None, topics=None, type=None, published=None, emoji=None, published_at=None):
-        """
-        既存の記事を更新します
+    # 日本語タイトルの場合はタイトルの最初の数単語とタイムスタンプを使用
+    if not slug or len(slug) < 3:
+        timestamp = datetime.datetime.now().strftime("%m%d%H%M")
+        slug = f"article-{timestamp}"
 
-        Args:
-            slug (str): 記事のスラッグ（ファイル名から.mdを除いたもの）
-            title (str): 新しいタイトル（オプション）
-            content (str): 新しい本文（オプション）
-            topics (list): 新しいトピックス（オプション）
-            type (str): 記事タイプ（"tech" or "idea"）（オプション）
-            published (bool): 公開状態の変更（オプション）
-            emoji (str): アイキャッチ用の絵文字（1文字）（オプション）
-            published_at (str): 公開日時（YYYY-MM-DD or YYYY-MM-DD HH:mm形式、オプション）
-        """
-        try:
-            repo = self.gh.get_repo(self.github_repo)
-            file_path = f"articles/{slug}.md"
+    return slug
 
-            # 既存のファイルを取得
-            file = repo.get_contents(file_path)
-            current_article = frontmatter.loads(file.decoded_content.decode())
+def create_frontmatter(metadata, emoji, state):
+    """フロントマターを生成する"""
+    frontmatter = {
+        "title": metadata["title"],
+        "emoji": emoji,
+        "type": metadata["type"],
+        "topics": metadata["topics"],
+        "published": state == "published"
+    }
 
-            # 更新するフィールドを設定
-            if title:
-                current_article.metadata['title'] = title
-            if topics:
-                current_article.metadata['topics'] = self.validate_topics(topics)
-            if type:
-                current_article.metadata['type'] = self.validate_article_type(type)
-            if published is not None:
-                current_article.metadata['published'] = published
-            if emoji:
-                current_article.metadata['emoji'] = emoji
-            if content:
-                current_article.content = content
+    return yaml.dump(frontmatter, allow_unicode=True)
 
-            # 公開予約時のみpublished_atを設定
-            if published and published_at:
-                current_article.metadata['published_at'] = published_at
-            elif not published and 'published_at' in current_article.metadata:
-                del current_article.metadata['published_at']
+def copy_images(image_dir, article_slug, zenn_dir):
+    """画像ファイルをZennのディレクトリ構造にコピーする"""
+    if not image_dir:
+        return []
 
-            # 更新をプッシュ
-            repo.update_file(
-                path=file_path,
-                message=f"Update article: {current_article.metadata['title']}",
-                content=frontmatter.dumps(current_article),
-                sha=file.sha,
-                branch="main"
-            )
-            return f"記事が正常に更新されました: {file_path}"
-        except Exception as e:
-            return f"エラーが発生しました: {str(e)}"
+    source_dir = Path(image_dir)
+    target_dir = Path(zenn_dir) / "images" / article_slug
+
+    # ターゲットディレクトリが存在しない場合は作成
+    os.makedirs(target_dir, exist_ok=True)
+
+    copied_files = []
+    for img_file in source_dir.glob("*"):
+        if img_file.is_file() and img_file.suffix.lower() in ['.jpg', '.jpeg', '.png', '.gif', '.svg']:
+            target_file = target_dir / img_file.name
+            shutil.copy2(img_file, target_file)
+            copied_files.append(str(target_file))
+
+    return copied_files
+
+def git_push(zenn_dir, article_file, image_files, article_slug):
+    """GitHubリポジトリに変更をプッシュする"""
+    try:
+        # カレントディレクトリを保存
+        original_dir = os.getcwd()
+        os.chdir(zenn_dir)
+
+        # git add
+        subprocess.run(["git", "add", article_file], check=True)
+        for img_file in image_files:
+            subprocess.run(["git", "add", img_file], check=True)
+
+        # git commit
+        commit_message = f"Add article: {article_slug}"
+        subprocess.run(["git", "commit", "-m", commit_message], check=True)
+
+        # git push
+        subprocess.run(["git", "push", "origin", "main"], check=True)
+
+        # 元のディレクトリに戻る
+        os.chdir(original_dir)
+
+        return True, "GitHub へのプッシュが完了しました。"
+    except subprocess.CalledProcessError as e:
+        return False, f"Git コマンドの実行中にエラーが発生しました: {e}"
+    except Exception as e:
+        return False, f"予期せぬエラーが発生しました: {e}"
+
+def main():
+    """メイン処理"""
+    args = parse_args()
+
+    try:
+        # 記事ファイルを読み込む
+        with open(args.article, 'r', encoding='utf-8') as f:
+            content = f.read()
+
+        # メタデータを抽出
+        metadata = extract_metadata(content)
+
+        # スラッグを生成
+        article_slug = create_article_slug(metadata["title"])
+
+        # 絵文字を選択
+        emoji = args.emoji if args.emoji else select_emoji(metadata["category"], content)
+
+        # 画像パスを変換
+        content = convert_image_paths(content, article_slug, args.images)
+
+        # フロントマターを生成
+        frontmatter = create_frontmatter(metadata, emoji, args.state)
+
+        # Zennフォーマットの記事を生成
+        today = datetime.datetime.now().strftime("%Y-%m-%d")
+        zenn_filename = f"{today}-{article_slug}.md"
+
+        # Zennディレクトリのパスを取得（カレントディレクトリをデフォルトとする）
+        zenn_dir = os.getcwd()
+
+        # 記事ディレクトリが存在しない場合は作成
+        article_dir = os.path.join(zenn_dir, ZENN_ARTICLE_DIR)
+        os.makedirs(article_dir, exist_ok=True)
+
+        # 記事ファイルを作成
+        zenn_article_path = os.path.join(article_dir, zenn_filename)
+        with open(zenn_article_path, 'w', encoding='utf-8') as f:
+            f.write(f"---\n{frontmatter}---\n\n{content}")
+
+        # 画像ファイルをコピー
+        copied_images = copy_images(args.images, article_slug, zenn_dir)
+
+        # GitHubにプッシュ
+        push_result = (True, "GitHub へのプッシュはスキップされました。")
+        if args.push:
+            push_result = git_push(zenn_dir, zenn_article_path, copied_images, article_slug)
+
+        # 結果を出力
+        print("\n== Zenn公開準備完了レポート ==")
+        print(f"記事タイトル: {metadata['title']}")
+        print(f"スラッグ: {article_slug}")
+        print(f"公開状態: {args.state}")
+        print(f"出力ファイル: {zenn_article_path}")
+        print(f"コピーした画像: {len(copied_images)}個")
+        print(f"GitHubプッシュ: {push_result[1]}")
+
+        # Zenn URLを表示
+        if args.state == "published" and push_result[0]:
+            print("\n公開後のURL:")
+            print(f"https://zenn.dev/{ZENN_USERNAME}/articles/{article_slug}")
+
+        return 0
+
+    except Exception as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 1
 
 if __name__ == "__main__":
-    # 記事の情報を設定
-    publisher = ZennPublisher()
-    result = publisher.publish_article(
-        title="Zenn Publisher APIのテスト記事",
-        content="これはテスト記事です。\n\n# はじめに\n\nこれはZenn Publisher APIのテストです。",
-        topics=["Python", "API"],
-        type="tech",
-        published=False,  # 下書きとして保存
-        emoji="🚀"  # アイキャッチ絵文字を設定
-    )
-    print(result)
+    sys.exit(main())
