@@ -1,0 +1,35 @@
+# 環境変数ファイル
+.env
+
+# Python関連
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# エディタ関連
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS関連
+.DS_Store
+Thumbs.db

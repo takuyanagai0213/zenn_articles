@@ -33,6 +33,9 @@ ai_tech_media/
     ├── edit_publish_agents.md     # 編集・公開準備プロセス用エージェント
     ├── framework_agents.md        # エージェント連携フレームワーク
     └── zenn_agents.md             # Zenn特化プロセス用エージェント
+├── scripts/                      # スクリプトファイル
+│   ├── README.md                # スクリプトの使用方法
+│   └── zenn_publisher.py        # Zenn投稿用スクリプト
 ```
 
 ## 制作プロセス
@@ -318,3 +321,6 @@ mcp_brave_brave_web_search (query: "生成AI トレンド キーワード [年] 
 - **主な用途**: 記事の時間軸設定、現在時刻の取得
 - **タイムゾーン設定**: "Asia/Tokyo"を指定して日本時間を取得
 - **公開日時の整合性**: 記事内の日付情報と現在時刻の整合性確認
+
+### 3. スクリプト
+各種自動化スクリプトの使用方法については、[scripts/README.md](scripts/README.md)を参照してください。
