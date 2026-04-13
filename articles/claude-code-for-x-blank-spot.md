@@ -149,6 +149,12 @@ Claude CodeやMCPを使いこなすには、エンジニアリングの素養が
 
 ---
 
+**この記事のような Claude Code 実践と、その裏側にある思想を日常的に発信しています。**
+**→ [X (Twitter) をフォロー](https://x.com/ejq45liu)**
+**→ [note で長文を読む](https://note.com/harness_eng)**
+
+---
+
 **関連記事:**
 - [Claude Codeで100個のSkillを育てた全記録](https://zenn.dev/takuyanagai0213/articles/claude-code-100-skills-full-record)
 - [Claude Code で 33,999 observations を育てた全記録](https://zenn.dev/takuyanagai0213/articles/claude-code-memory-33999-observations)
