@@ -8,7 +8,7 @@ published: true
 
 # 融解するハーネス — watanyさんの『混乱と私見』への、1年実運用からの補足
 
-watanyさんが書かれた「AIエージェントの"ハーネス"に関わる混乱と私見」を読んだ。
+watanyさんが書かれた[「AIエージェントの"ハーネス"に関わる混乱と私見」](https://zenn.dev/watany/articles/d8b692bbca65a3)を読んだ。
 
 論点整理の鋭さ、そして「話半分に読んでください」という謙虚な閉じ方に、深く共感した。
 
@@ -196,7 +196,11 @@ note(体感と思想): [harness_eng](https://note.com/harness_eng)
 
 ハーネスエンジニアリングの積み上げの過程を、noteメンバーシップ「Builder's Log」で公開しています(月額¥500)。ブレストの生ログ、未公開メモ、下書き先出し。
 
-### 関連記事
+### 参考記事(本記事の補足対象)
+
+- watany「[AIエージェントの"ハーネス"に関わる混乱と私見](https://zenn.dev/watany/articles/d8b692bbca65a3)」
+
+### 関連記事(わたしの過去記事)
 
 - [Claude Codeで100個のSkillを育てた全記録](https://zenn.dev/takuyanagai0213/articles/claude-code-100-skills-full-record)
 - [Claude Codeで33,999のエージェントメモリを育てた全記録](https://zenn.dev/takuyanagai0213/articles/claude-code-memory-33999-observations)
