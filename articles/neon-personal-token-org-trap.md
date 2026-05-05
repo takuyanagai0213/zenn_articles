@@ -1,12 +1,12 @@
 ---
-title: "Neon Personal Token は org に bind される — /users/me で 30 秒で見抜く 1 行 verify pattern"
+title: "Neon Personal Token の org bind 罠 — /users/me で 30 秒 verify"
 emoji: "🔑"
 type: "tech"
 topics: ["neon", "vercel", "claudecode", "devops", "postgres"]
 published: true
 ---
 
-# Neon Personal Token は org に bind される — /users/me で 30 秒で見抜く 1 行 verify pattern
+# Neon Personal Token の org bind 罠 — /users/me で 30 秒 verify
 
 ## はじめに
 

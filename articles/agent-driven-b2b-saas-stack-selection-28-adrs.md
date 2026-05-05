@@ -1,5 +1,5 @@
 ---
-title: "Vercel + Neon + Next.js + Drizzle + Better Auth で B2B SaaS を1ヶ月で立てた技術選定 — 28 ADR から見える Agent-Driven 開発の axis"
+title: "Vercel + Neon で B2B SaaS を 1 ヶ月で立てた技術選定 — 28 ADR の Agent-Driven 主軸"
 emoji: "🧭"
 type: "tech"
 topics: ["claudecode", "vercel", "neon", "nextjs", "agentnative"]
