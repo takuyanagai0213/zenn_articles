@@ -1,12 +1,12 @@
 ---
-title: "Drizzle + Neon + Neon MCP で『PR ごとに DB を持つ』 開発フロー — Agent-Driven branching の運用論"
+title: "Drizzle + Neon MCP で『PR ごとに DB を持つ』 — Agent-Driven branching"
 emoji: "🌿"
 type: "tech"
 topics: ["neon", "drizzle", "claudecode", "postgres", "agentnative"]
 published: true
 ---
 
-# Drizzle + Neon + Neon MCP で『PR ごとに DB を持つ』 開発フロー
+# Drizzle + Neon MCP で『PR ごとに DB を持つ』 — Agent-Driven branching
 
 ## はじめに
 
