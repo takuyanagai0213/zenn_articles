@@ -378,3 +378,15 @@ description: 何をするスキルか1行で。
 
 始め方は簡単だ。CLAUDE.mdに5行書くだけでいい。
 
+---
+
+## 2026-05-10 追記: ハーネスを経済 layer に拡張(x402 Phase 1 mainnet 完走)
+
+8 ヶ月育てたハーネスを、 5/9-5/10 の一日で **x402 Payment Protocol(Coinbase Developer Platform、 2025-10 launch、 2026-03 Linux Foundation 移管)対応 endpoint** に拡張、 deploy 完了。 AI agent からの USDC payment 受信可能 form を Base mainnet で公開中:
+
+- live endpoint: <https://tsuji-x402-endpoint.nagataku021.workers.dev>
+- GitHub repo: <https://github.com/takuyanagai0213/tsuji>(Public、 Hono + x402-hono + CDP facilitator + Cloudflare Workers stack)
+- discovery: `/llms.txt` + `/.well-known/agentic-capabilities.json`
+
+ハーネスは「自分のため」 だけでなく「外部 AI agent からの inbound business 受信装置」 にも進化、 AI agent 経済の **supplier 側 N=1 実験** として運用中。 詳細別記事公開予定。
+
