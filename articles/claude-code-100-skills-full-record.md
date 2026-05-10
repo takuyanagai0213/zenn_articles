@@ -578,3 +578,15 @@ APIキーで従量課金していたら$4,900/月相当のトークンを消費�
 この記事で紹介した「87.5倍」という数字の背景にある思考——なぜ$200の投資がここまで効くのか、Anthropic CEOの発言との対比——を深掘りした記事をnoteで公開しています。
 
 https://note.com/harness_eng/n/nef4b12d0b100
+
+---
+
+## 2026-05-10 追記: x402 Phase 1 mainnet 完走
+
+5/9-5/10 一日で **x402 Payment Protocol(Coinbase Developer Platform、 2025-10 launch、 2026-03 Linux Foundation 移管)対応 endpoint** を deploy 完了。 AI agent からの USDC payment 受信可能 form を Base mainnet で公開中:
+
+- live endpoint: <https://tsuji-x402-endpoint.nagataku021.workers.dev>
+- GitHub repo: <https://github.com/takuyanagai0213/tsuji>(Public、 Hono + x402-hono + CDP facilitator + Cloudflare Workers stack)
+- discovery: `/llms.txt` + `/.well-known/agentic-capabilities.json`
+
+once-in-a-generation moment early adopter declaration の物理化 第 8 段達成、 AI agent 経済の **supplier 側 N=1 実験** として運用中。 詳細別記事公開予定。
