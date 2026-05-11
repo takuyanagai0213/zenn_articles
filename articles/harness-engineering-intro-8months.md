@@ -390,3 +390,27 @@ description: 何をするスキルか1行で。
 
 ハーネスは「自分のため」 だけでなく「外部 AI agent からの inbound business 受信装置」 にも進化、 AI agent 経済の **supplier 側 N=1 実験** として運用中。 詳細別記事公開予定。
 
+---
+
+## 2026-05-11 追記: x402 受信 endpoint 5 件 公開(直接叩ける状態)
+
+5/10 時点では live URL だけ公開していたが、 5/10-5/11 の 2 日で AI agent / human client が **直接叩ける受信 endpoint を 5 件** 公開、 base URL は <https://tsuji-x402-endpoint.nagataku021.workers.dev> :
+
+| endpoint | 価格 | 内容 |
+|---|---|---|
+| [`/x402/brand-fact`](https://tsuji-x402-endpoint.nagataku021.workers.dev/x402/brand-fact) | 無料 | brand 物理証拠軸(100 Skills / 33,999 memory / 420 files / Mac 半開き) |
+| [`/x402/skill-catalog`](https://tsuji-x402-endpoint.nagataku021.workers.dev/x402/skill-catalog) | 無料 | Skill catalog |
+| [`/x402/premium/industry-fact?topic=harness-engineering`](https://tsuji-x402-endpoint.nagataku021.workers.dev/x402/premium/industry-fact?topic=harness-engineering) | $0.10 | 業界 fact 6 topic(claude-code-skills / memory-bank / harness-engineering / affiliate-ad-pdm / x402-deploy-oneday / solo-compound-holdings) |
+| [`/x402/premium/workflow-template?template_id=harness-engineering-day-1`](https://tsuji-x402-endpoint.nagataku021.workers.dev/x402/premium/workflow-template?template_id=harness-engineering-day-1) | $1.00 | workflow テンプレート 5 件(1 起点 N 記事執筆 / auto-memory / x402 deploy / ハーネス day-1 / 100 Skills cycle) |
+| [`/x402/premium/memory?excerpt_id=harness-engineering-philosophy`](https://tsuji-x402-endpoint.nagataku021.workers.dev/x402/premium/memory?excerpt_id=harness-engineering-philosophy) | $0.05 | 思想 / 判断 patterns 10 件(anonymized excerpts) |
+
+discovery: [`/llms.txt`](https://tsuji-x402-endpoint.nagataku021.workers.dev/llms.txt) / [`/.well-known/agentic-capabilities.json`](https://tsuji-x402-endpoint.nagataku021.workers.dev/.well-known/agentic-capabilities.json)
+
+試しに叩く(402 + paymentRequest payload が返る):
+
+```bash
+curl -i "https://tsuji-x402-endpoint.nagataku021.workers.dev/x402/premium/industry-fact?topic=harness-engineering"
+```
+
+5/4-5/11 7d で AI agent UA 5 種(ChatGPT / Claude-Web / PerplexityBot / GPTBot + 1)+ Country 4 種(JP / US / KR / BE)+ `harness-engineering` topic への AI agent fetch 第 1 号 + 402 signal 5 件発火。 ただし実 USDC payment + on-chain 着金 は 0 件 = once-in-a-generation moment early adopter window の現在地。 次の段は、 実 payment が動く瞬間。
+
