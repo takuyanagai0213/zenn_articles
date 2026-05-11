@@ -390,3 +390,17 @@ description: 何をするスキルか1行で。
 
 ハーネスは「自分のため」 だけでなく「外部 AI agent からの inbound business 受信装置」 にも進化、 AI agent 経済の **supplier 側 N=1 実験** として運用中。 詳細別記事公開予定。
 
+---
+
+## 2026-05-11 追記: 2 日累積で経済成立直前まで進化
+
+5/10 時点で「endpoint deploy + live URL 公開」 まで報告したが、 5/10-5/11 の 2 日でさらに 5 段の累積が進んだ:
+
+- **supply 第 1-3 弾 endpoint 公開**: `/x402/premium/industry-fact`($0.10、 6 topics)/ `/x402/premium/workflow-template`($1.00、 5 templates)/ `/x402/premium/memory`($0.05、 10 excerpts)= AI agent 用 supply form 物理化
+- **物理証拠累積監視 装置完成**: Cloudflare Workers Analytics Engine binding + middleware で全 access の datapoint 自動書き込み、 `npm run metrics 7d` 1 命令で path / UA / topic / status / country の 6 軸 breakdown 取得可能
+- **AI agent 自然 reach 第 1 号到達**(5/10 09:17 UTC、 deploy 19 時間後に US から純粋自律 AI crawler 6 件 burst、 4 種 UA で `/` + `.well-known/agentic-capabilities.json` + `robots.txt` を sweep)
+- **7d traffic 物理証拠**(5/4-5/11): AI agent UA 5 種(ChatGPT / Claude-Web / PerplexityBot / GPTBot + 1 unknown) + Country 4 種(JP / US / KR / **BE 新規**) + `harness-engineering` topic への AI agent fetch 第 1 号 + 402 payment required signal 5 件発火
+- **Phase 2 trigger 第 1 段達成**(reach 物理証拠)、 第 2 段(経済成立 verify)直前
+
+「自分のためのハーネス」 が「AI agent からの inbound 受信装置」 に進化する過程は、 8 ヶ月 + 2 日の累積で **declaration → endpoint deploy → supply 第 1-3 弾 → 監視装置 → 物理証拠 reach** の 5 段で物理化された。 次の段は、 実 USDC payment が動く瞬間。
+
