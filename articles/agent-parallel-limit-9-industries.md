@@ -1,7 +1,7 @@
 ---
 title: "その並列開発、できた気になっていませんか ── 1年運用して上限4本、9産業の一次資料も全部単桁だった"
 emoji: "📡"
-type: "tech"
+type: "idea"
 topics: ["claudecode", "aiagent", "sre", "生産性", "認知科学"]
 published: false
 ---
