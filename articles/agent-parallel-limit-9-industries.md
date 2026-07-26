@@ -3,7 +3,7 @@ title: "その並列開発、できた気になっていませんか ── 1年
 emoji: "📡"
 type: "idea"
 topics: ["claudecode", "aiagent", "sre", "生産性", "認知科学"]
-published: false
+published: true
 ---
 
 みなさん、本当に並列開発できていますか。できた気になっているだけではないですか。
