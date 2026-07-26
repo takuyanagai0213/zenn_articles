@@ -78,7 +78,7 @@ published: true
 | 軍組織 | 3〜6 | Hamilton 1921 ／ 原典 |
 | SREオンコール | 2件 / 12時間シフト | Google SRE Book ／ 一次 |
 | トヨタの多台持ち | 3〜5台 | Art of Lean ／ 権威二次 |
-| **例外：航空管制** | **18機 ±3** | MIT Lincoln Lab / FAA |
+| **例外：航空管制** | **18機** | FAA の Monitor Alert 現行 nominal 容量上限（MIT Lincoln Lab ATC-426）／ 一次 |
 | **例外：トヨタ（1954）** | **17台** | 権威二次 |
 
 出典の階層をわざわざ列に立てているのは、査読論文と業界ブログを同じ顔で並べたくないからです。以降、この記事で数字を出すときは、それがどの階層から来たのかを毎回書きます。
@@ -306,3 +306,33 @@ flowchart TD
 具体的には、僕自身の運用で常時8本以上を能動的に回して、取りこぼし（レビューが眺めるに変わる、通知と期待が合わなくなる）が増えない状態が3か月続いたら、この記事は間違っていたことになります。その場合、原因は道具のどこかが第6節の両側を大きく動かしたということなので、何が効いたのかを書き直します。
 
 確認は2026年10月末に行います。
+
+## 参考文献
+
+本文と同じく、出典の階層ごとに分けています。リンクのあるものは公開時にアクセスを確認しました。
+
+**査読論文・研究機関レポート（一次）**
+
+- Cowan, N. (2001) "The magical number 4 in short-term memory: a reconsideration of mental storage capacity", *Behavioral and Brain Sciences* 24(1) — [PubMed](https://pubmed.ncbi.nlm.nih.gov/11515286/)
+- Crandall, J.W. & Cummings, M.L. (2007) "Developing Performance Metrics for the Supervisory Control of Multiple Robots", *IEEE Transactions on Robotics* — [PDF](https://faculty.cs.byu.edu/~crandall/papers/CrandallCummingsTRO2007_Final.pdf)
+- Drew, B.J. et al. (2014) "Insights into the problem of alarm fatigue with physiologic monitor devices", *PLOS ONE* 9(10) — [PLOS ONE](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0110274)
+- De Man, F.R. et al. (2013) "Intra-operative monitoring — many alarms with minor impact", *Anaesthesia* 68(8) — [PubMed](https://pubmed.ncbi.nlm.nih.gov/23745968/)
+- Welch, J.D. et al. (2015) "Applying Flight Object Data to Air Traffic Control Sector Capacity Estimation", MIT Lincoln Laboratory ATC-426 — [PDF](https://www.ll.mit.edu/sites/default/files/publication/doc/2018-05/Welch_2015_ATC-426.pdf)（Monitor Alert の現行 nominal 容量上限 18機の記述は p.30）
+
+**規則・公式ドクトリン**
+
+- 42 CFR § 415.110（麻酔科医の medical direction、同時4件を超えると監督扱い）— [eCFR](https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-415/subpart-C/section-415.110)
+- FEMA / NIMS「Manageable Span of Control」（最適1:5、範囲3〜7）— [FEMA Emergency Management Institute](https://emilms.fema.gov/IS0700b/content/229.html)
+- California AB 394 / 22 CCR § 70217（ICU看護配置 1:2）
+- BFU（ドイツ連邦航空事故調査局）Investigation Report AX001-1-2/02、ユーバーリンゲン空中衝突（2002年7月1日）— [報告書 PDF](https://www.bfu-web.de/EN/Publications/FinalReports/2002/Report_02_AX001-1-2_Ueberlingen_Report.pdf?__blob=publicationFile&v=1)
+
+**原典**
+
+- Graicunas, V.A. (1933) "Relationship in Organization" — [PDF](https://www.nickols.us/graicunas.pdf)
+- Hamilton, I. (1921) *The Soul and Body of an Army* — [Internet Archive](https://archive.org/details/soulbodyofarmy00hamiiala)
+- Urwick, L.F. (1956) "The Manager's Span of Control", *Harvard Business Review*, May–June 1956
+
+**実務ドキュメント・権威二次**
+
+- Beyer, B. et al. (eds.) *Site Reliability Engineering: How Google Runs Production Systems* — [オンライン版](https://sre.google/sre-book/)
+- Art of Lean（Art Smalley）による多台持ちと自働化の記述（トヨタの3〜5台、1954年の17台）
