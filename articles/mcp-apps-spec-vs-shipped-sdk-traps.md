@@ -3,7 +3,7 @@ title: "MCP Apps を仕様書どおりに書いたら動かなかった ── 2
 emoji: "🧩"
 type: "tech"
 topics: ["mcp", "claudecode", "typescript", "aiagent"]
-published: false
+published: true
 ---
 
 チャットの中に自分のツールの画面を出せる、という話を聞いて、実際に書いてみました。
