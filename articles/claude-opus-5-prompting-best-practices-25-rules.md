@@ -1,5 +1,5 @@
 ---
-title: "Claude Opus 5 のプロンプティングベストプラクティスを自作ルール 25 本に適用したら、削除はゼロだった"
+title: "【Claude Opus 5】ベストプラクティスをルール25本に当てたら、穴が3つ出た"
 emoji: "🧹"
 type: "tech"
 topics: ["claudecode", "ai", "llm", "プロンプトエンジニアリング", "anthropic"]
