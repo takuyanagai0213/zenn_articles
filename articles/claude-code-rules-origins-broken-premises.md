@@ -3,7 +3,7 @@ title: "rules 25 本はコピーできる。根拠が壊れた日に残すか直
 emoji: "🪨"
 type: "idea"
 topics: ["claudecode", "ai", "llm", "プロンプトエンジニアリング", "設計"]
-published: true
+published: false
 ---
 
 ## TL;DR
