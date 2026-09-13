@@ -590,3 +590,15 @@ https://note.com/harness_eng/n/nef4b12d0b100
 - discovery: `/llms.txt` + `/.well-known/agentic-capabilities.json`
 
 once-in-a-generation moment early adopter declaration の物理化 第 8 段達成、 AI agent 経済の **supplier 側 N=1 実験** として運用中。 詳細別記事公開予定。
+
+---
+
+## 相談を受けています
+
+この記事を書いてから、スキルは 68 本まで減りました（アーカイブと子プロジェクトへの移管で）。
+代わりに増えたのが**ルール 27 本 / 138 節**で、こちらは**踏んだ事故を 1 件ずつ書き足したもの**です。
+
+**AI エージェントへの依頼で同じように詰まっている方と、話すことがあります。30 分・費用ゼロです。**
+売り込みはしません。
+
+→ https://forms.gle/A15UBL4LWckfC79r5

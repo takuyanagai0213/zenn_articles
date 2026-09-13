@@ -414,3 +414,14 @@ curl -i "https://tsuji-x402-endpoint.nagataku021.workers.dev/x402/premium/indust
 
 5/4-5/11 7d で AI agent UA 5 種(ChatGPT / Claude-Web / PerplexityBot / GPTBot + 1)+ Country 4 種(JP / US / KR / BE)+ `harness-engineering` topic への AI agent fetch 第 1 号 + 402 signal 5 件発火。 ただし実 USDC payment + on-chain 着金 は 0 件 = once-in-a-generation moment early adopter window の現在地。 次の段は、 実 payment が動く瞬間。
 
+---
+
+## 相談を受けています
+
+この記事の 8 ヶ月から、さらに 5 ヶ月が経ちました。
+いま渡しているのは**ルール 27 本 / 5,771 行 / 138 節**で、**そのほとんどが事故の日付を持っています**。
+
+**AI エージェントに開発を任せるときの「詰まり」について、話すことがあります。30 分・費用ゼロです。**
+売り込みはしません。
+
+→ https://forms.gle/A15UBL4LWckfC79r5
