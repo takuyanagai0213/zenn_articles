@@ -3,7 +3,7 @@ title: "AI に「いい感じにして」と頼むと終わらない ── 完�
 emoji: "🔍"
 type: "tech"
 topics: ["claudecode", "aiagent", "生成ai", "開発フロー", "プロンプト"]
-published: false
+published: true
 ---
 
 ## TL;DR
@@ -143,4 +143,4 @@ grep -o 'class="jump"' toc.html | wc -l   # → 8
 
 AI エージェントへの依頼で同じように詰まっている方と、話すことがあります。30 分・費用ゼロです。
 
-→ （受け口の URL）
+→ https://forms.gle/A15UBL4LWckfC79r5
