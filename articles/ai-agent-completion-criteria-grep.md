@@ -143,4 +143,4 @@ grep -o 'class="jump"' toc.html | wc -l   # → 8
 
 AI エージェントへの依頼で同じように詰まっている方と、話すことがあります。30 分・費用ゼロです。
 
-→ https://forms.gle/A15UBL4LWckfC79r5
+→ https://nagai-r.nagataku021.workers.dev/a1-f

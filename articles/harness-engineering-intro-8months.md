@@ -424,4 +424,4 @@ curl -i "https://tsuji-x402-endpoint.nagataku021.workers.dev/x402/premium/indust
 **AI エージェントに開発を任せるときの「詰まり」について、話すことがあります。30 分・費用ゼロです。**
 売り込みはしません。
 
-→ https://forms.gle/A15UBL4LWckfC79r5
+→ https://nagai-r.nagataku021.workers.dev/a3-f

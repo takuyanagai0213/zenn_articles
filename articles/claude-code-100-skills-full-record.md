@@ -601,4 +601,4 @@ once-in-a-generation moment early adopter declaration の物理化 第 8 段達�
 **AI エージェントへの依頼で同じように詰まっている方と、話すことがあります。30 分・費用ゼロです。**
 売り込みはしません。
 
-→ https://forms.gle/A15UBL4LWckfC79r5
+→ https://nagai-r.nagataku021.workers.dev/a2-f
