@@ -602,3 +602,8 @@ once-in-a-generation moment early adopter declaration の物理化 第 8 段達�
 売り込みはしません。
 
 → https://nagai-r.nagataku021.workers.dev/a2-f
+
+その後、チームで Claude Code を導入するときのルールづくりを手伝う研修を始めました（2026 年 9 月追記）。
+
+- 本番環境を守っている設定の実例: [Claude Code の権限設定だけでは本番環境は守れない](https://nagai-r.nagataku021.workers.dev/a2-p)
+- 研修の案内: [Claude Code 導入と自社ルール策定の研修](https://nagai-r.nagataku021.workers.dev/a2-l)
